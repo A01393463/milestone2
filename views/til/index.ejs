@@ -1,11 +1,11 @@
 <% include ../head %>
 
   <ul>
-    <% for(var i=0; i<entries.length; i++) { %>
+    <% for(var i=0; i<til.length; i++) { %>
       <li>
-        <a href='/entries/<%= i %>'><%= entries[i].slug %></a>
-        <a href='/entries/<%= i %>/edit'>Edit</a>
-        <a href='/entries/<%= i %>/delete'>Delete</a>
+        <a href='/til/<%= i %>'><%= til[i].slug %></a>
+        <a href='/til/<%= i %>/edit'>Edit</a>
+        <a href='/til/<%= i %>/delete'>Delete</a>
       </li>
     <% } %>
   </ul>
