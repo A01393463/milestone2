@@ -15,6 +15,7 @@ router.get('/', function(req, res, next) {
       console.log(data);
       res.render('til/index', { title: 'Today I Learned', til: data });
     }
+  )
 });
 
 /* CREATE til entry form: GET /til/new */
