@@ -1,12 +1,14 @@
 <% include ../head %>
 
-  <ul>
+  <ul class="list-unstyled">
     <% for(var i=0; i<til.length; i++) { %>
-      <li>
-        <a href='/til/<%= i %>'><%= til[i].slug %></a>
-        <a href='/til/<%= i %>/edit'>Edit</a>
-        <a href='/til/<%= i %>/delete'>Delete</a>
-      </li>
+      <div class="well">
+	<li>
+	  <a href='/til/<%= i %>' class="btn btn-info btn-lg" role="button"><%= til[i].slug %></a>
+	  <a href='/til/<%= i %>/edit' class="btn btn-warning btn-sm" role="button"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+	  <a href='/til/<%= i %>/delete' class="btn btn-danger btn-sm" role="button"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+	</li>
+      </div>
     <% } %>
   </ul>
 
