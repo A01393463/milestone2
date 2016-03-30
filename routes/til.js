@@ -5,6 +5,8 @@ var til = [];
 
 /* READ all: GET til listing. */
 router.get('/', function(req, res, next) {
+  console.log(req.cookies.username);
+  var name = req.cookies.username || 'anonymous';
   req.db.driver.execQuery(
     "SELECT * FROM entries;",
     function (err, data) {
@@ -13,7 +15,7 @@ router.get('/', function(req, res, next) {
         console.log(err);
       }
       //console.log(data);
-      res.render('til/index', { title: 'Today I Learned', til: data });
+      res.render('til/index', { title: 'Today I Learned', til: data, name: name });
     }
   )
 });
@@ -34,7 +36,7 @@ router.post('/', function(req, res, next) {
         console.log(err);
       }
   
-      res.redirect(303, '/til/index');
+      res.redirect(303, '/til/');
     }
   );
 });
@@ -97,6 +99,7 @@ router.get('/:id/delete', function(req, res, next) {
 /* THIS NEEDS TO BE LAST or /new goes here rather than where it should */
 /* READ one til entry: GET /til/0 */
 router.get('/:id', function(req, res, next) {
+  console.log("GET entry id");
   req.db.driver.execQuery(
     'SELECT * FROM entries WHERE id=?;',
     [parseInt(req.params.id)],
