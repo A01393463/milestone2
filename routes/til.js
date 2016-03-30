@@ -48,7 +48,7 @@ router.post('/', function(req, res, next) {
 /* UPDATE til entry form: GET /til/1/edit */
 router.get('/:id/edit', function(req, res, next) {
   req.db.driver.execQuery(
-    'SELECT' * FROM entries WHERE id=?;',
+    'SELECT * FROM entries WHERE id=?;',
     [parseInt(req.params.id)],
     function(err, data) {
       if(err)
