@@ -4,11 +4,13 @@
 
   <ul class="list-unstyled">
     <% for(var i=0; i<til.length; i++) { %>
-      <li>
-        <a href='/til/<%= til[i].id %>'><%= til[i].slug %></a>
-        <a href='/til/<%= til[i].id %>/edit'>Edit</a>
-        <a href='/til/<%= til[i].id %>/delete'>Delete</a>
-      </li>
+      <div class="well">
+	<li>
+	  <a href='/til/<%= til[i].id %>' class="btn btn-primary btn-lg" role="button"><%= til[i].slug %></a>
+	  <a href='/til/<%= til[i].id %>/edit' class="btn btn-warning btn-sm" role="button"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+	  <a href='/til/<%= til[i].id %>/delete' class="btn btn-danger btn-sm" role="button"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+	</li>
+      </div>
     <% } %>
   </ul>
 

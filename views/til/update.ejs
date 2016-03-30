@@ -1,13 +1,17 @@
 <% include ../head %>
 
-  <form action="/til/<%= entry.id %>" method='POST'>
-    <label name="slug">Slug</label>
-    <input type="text" name="slug" value="<%= entry.slug %>">
-    <br />
-    <label name="body">Body</label>
-    <input type="text" name="body" value="<%= entry.body %>">
-    <br />
-    <input type="submit">
-  </form>
+  <div class="well">
+    <form role="form" action="/til/<%= entry.id %>" method='POST'>
+      <div class="form-group">
+	<label name="slug" for="slug">Slug:</label>
+	<input type="text" name="slug" class="form-control" id="slug" value="<%= entry.slug %>">
+      </div>
+      <div class="form-group">
+	<label name="body" for="body">Body</label>
+	<input type="text" name="body" class="form-control" id="body" value="<%= entry.body %>">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
 
 <% include ../footer %>
