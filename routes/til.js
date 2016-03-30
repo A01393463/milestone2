@@ -69,7 +69,7 @@ router.get('/:id/edit', function(req, res, next) {
 router.post('/:id', function(req, res, next) {
   req.db.driver.execQuery(
     "UPDATE entries SET slug=? ,body=? WHERE id=?;",
-    [req.body.slug, req.body.body, parseInt(req.params.id)]
+    [req.body.slug, req.body.body, parseInt(req.params.id)],
     function(err, data) {
       if(err)
       {
