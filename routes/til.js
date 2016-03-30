@@ -23,7 +23,8 @@ router.get('/new', function(req, res, next) {
 /* CREATE til entry: POST /til/ */
 router.post('/', function(req, res, next) {
   req.db.driver.execQuery(
-    "INSERT INTO entries (slug, body) VALUES ('" + req.body.slug + "','" + req.body.body + "');",
+    "INSERT INTO entries (slug, body) VALUES (?,?);",
+    [req.body.slug, req.body.body],
     function(err, data) {
       if(err)
       {
@@ -47,7 +48,8 @@ router.post('/', function(req, res, next) {
 /* UPDATE til entry form: GET /til/1/edit */
 router.get('/:id/edit', function(req, res, next) {
   req.db.driver.execQuery(
-    'SELECT' * FROM entries WHERE id=' + parseInt(req.params.id) + ';',
+    'SELECT' * FROM entries WHERE id=?;',
+    [parseInt(req.params.id)],
     function(err, data) {
       if(err)
       {
@@ -65,11 +67,9 @@ router.get('/:id/edit', function(req, res, next) {
 
 /* UPDATE til entry: POST /til/1 */
 router.post('/:id', function(req, res, next) {
-  var sqlstring = "UPDATE entries SET slug='" + req.body.slug + "',body='" + req.body.body + "' WHERE id=" + parseInt(req.params.id) + ";";
-  console.log(sqlstring);
-
   req.db.driver.execQuery(
-    sqlstring,
+    "UPDATE entries SET slug=? ,body=? WHERE id=?;",
+    [req.body.slug, req.body.body, parseInt(req.params.id)]
     function(err, data) {
       if(err)
       {
@@ -79,7 +79,8 @@ router.post('/:id', function(req, res, next) {
   );
 
   req.db.driver.execQuery(
-    'SELECT * FROM entries WHERE id=' + parseInt(req.params.id) + ';',
+    'SELECT * FROM entries WHERE id=?;',
+    [parseInt(req.params.id)],
     function(err, data) {
       if(err)
       {
@@ -94,7 +95,8 @@ router.post('/:id', function(req, res, next) {
 /* DELETE til entry: GET /til/1/delete */
 router.get('/:id/delete', function(req, res, next) {
   req.db.driver.execQuery(
-    'DELETE FROM entries WHERE id=' + parseInt(req.params.id) + ';',
+    'DELETE FROM entries WHERE id=?;',
+    [parseInt(req.params.id)],
     function(err, data) {
       if(err)
       {
@@ -120,7 +122,8 @@ router.get('/:id/delete', function(req, res, next) {
 /* READ one til entry: GET /til/0 */
 router.get('/:id', function(req, res, next) {
   req.db.driver.execQuery(
-    'SELECT * FROM entries WHERE id=' + parseInt(req.params.id) + ';',
+    'SELECT * FROM entries WHERE id=?;',
+    [parseInt(req.params.id)],
     function(err, data) {
       if(err)
       {
