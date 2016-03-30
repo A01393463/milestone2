@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
     "SELECT * FROM entries;",
     function (err, data) {
       if(err) { console.log(err); }
-      console.log(data);
+      //console.log(data);
       res.render('til/index', { title: 'Today I Learned', til: data });
     }
   )
@@ -25,8 +25,26 @@ router.get('/new', function(req, res, next) {
 
 /* CREATE til entry: POST /til/ */
 router.post('/', function(req, res, next) {
-  til.push(req.body);
-  res.render('til/index', { title: 'Today I Learned', til: til });
+  req.db.driver.execQuery(
+    "INSERT INTO entries (slug, body) VALUES ('" + req.body.slug + "','" + req.body.body + "');",
+    function(err, data) {
+      if(err)
+      {
+        console.log(err);
+      }
+    }
+  );
+
+  req.db.driver.execQuery(
+    "SELECT * FROM entries;",
+    function(err, data) {
+      if(err) {
+        console.log(err);
+      }
+
+      res.render('til/index', { title: 'Today I Learned', til: data });
+    }
+  );
 });
 
 /* UPDATE til entry form: GET /til/1/edit */
