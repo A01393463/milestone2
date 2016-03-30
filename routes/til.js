@@ -8,7 +8,10 @@ router.get('/', function(req, res, next) {
   req.db.driver.execQuery(
     "SELECT * FROM entries;",
     function (err, data) {
-      if(err) { console.log(err); }
+      if(err)
+      {
+        console.log(err);
+      }
       //console.log(data);
       res.render('til/index', { title: 'Today I Learned', til: data });
     }
@@ -30,17 +33,8 @@ router.post('/', function(req, res, next) {
       {
         console.log(err);
       }
-    }
-  );
-
-  req.db.driver.execQuery(
-    "SELECT * FROM entries;",
-    function(err, data) {
-      if(err) {
-        console.log(err);
-      }
-
-      res.render('til/index', { title: 'Today I Learned', til: data });
+  
+      res.redirect(303, '/til/index');
     }
   );
 });
@@ -67,6 +61,8 @@ router.get('/:id/edit', function(req, res, next) {
 
 /* UPDATE til entry: POST /til/1 */
 router.post('/:id', function(req, res, next) {
+  var id=parseInt(req.params.id);
+
   req.db.driver.execQuery(
     "UPDATE entries SET slug=? ,body=? WHERE id=?;",
     [req.body.slug, req.body.body, parseInt(req.params.id)],
@@ -75,21 +71,11 @@ router.post('/:id', function(req, res, next) {
       {
         console.log(err);
       }
+      
+      res.direct(303, '/til/' + id);
     }
   );
 
-  req.db.driver.execQuery(
-    'SELECT * FROM entries WHERE id=?;',
-    [parseInt(req.params.id)],
-    function(err, data) {
-      if(err)
-      {
-        console.log(err);
-      }
-      
-      res.render('til/entry', { title: "a entry", entry: data[0] } );
-    }
-  );
 });
 
 /* DELETE til entry: GET /til/1/delete */
@@ -102,18 +88,8 @@ router.get('/:id/delete', function(req, res, next) {
       {
         console.log(err);
       }
-    }
-  );
-
-  req.db.driver.execQuery(
-    "SELECT * FROM entries;",
-    function(err, data) {
-      if(err)
-      {
-        console.log(err);
-      }
-
-      res.render('til/index', { title: 'Today I Learned', til: data } );
+    
+      res.redirect(303, '/til/');
     }
   );
 });
