@@ -1,10 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var til = [
-  { slug:"How to implement pipes in a shell", body:"Use pipe() and dup2()", created_at:"March 5 2016" },
-  { slug:"How to write a dynamic website", body:"Use express and a bunch of other stuff", created_at:"March 4 2016" }
-];
+var til = [];
 
 /* READ all: GET til listing. */
 router.get('/', function(req, res, next) {
@@ -49,35 +46,90 @@ router.post('/', function(req, res, next) {
 
 /* UPDATE til entry form: GET /til/1/edit */
 router.get('/:id/edit', function(req, res, next) {
-  res.render('til/update',
-  {
-    title: 'Update a til entry',
-    id: req.params.id,
-    entry: til[req.params.id]
-  });
+  req.db.driver.execQuery(
+    'SELECT' * FROM entries WHERE id=' + parseInt(req.params.id) + ';',
+    function(err, data) {
+      if(err)
+      {
+        console.log(err);
+      }
+
+      res.render('til/update',
+      {
+	title: 'Update a til entry',
+	entry: data[0]
+      });
+    }
+  );
 });
 
 /* UPDATE til entry: POST /til/1 */
 router.post('/:id', function(req, res, next) {
-  til[req.params.id] = req.body;
-  res.render('til/index',
-  {
-    title: 'Update a til entry',
-    til: til
-  });
+  var sqlstring = "UPDATE entries SET slug='" + req.body.slug + "',body='" + req.body.body + "' WHERE id=" + parseInt(req.params.id) + ";";
+  console.log(sqlstring);
+
+  req.db.driver.execQuery(
+    sqlstring,
+    function(err, data) {
+      if(err)
+      {
+        console.log(err);
+      }
+    }
+  );
+
+  req.db.driver.execQuery(
+    'SELECT * FROM entries WHERE id=' + parseInt(req.params.id) + ';',
+    function(err, data) {
+      if(err)
+      {
+        console.log(err);
+      }
+      
+      res.render('til/entry', { title: "a entry", entry: data[0] } );
+    }
+  );
 });
 
 /* DELETE til entry: GET /til/1/delete */
 router.get('/:id/delete', function(req, res, next) {
-  var id = req.params.id;
-  til = til.slice(0,id).concat(til.slice(id+1, til.length));
-  res.render('til/index', { title:'Today I Learned', til: til });
+  req.db.driver.execQuery(
+    'DELETE FROM entries WHERE id=' + parseInt(req.params.id) + ';',
+    function(err, data) {
+      if(err)
+      {
+        console.log(err);
+      }
+    }
+  );
+
+  req.db.driver.execQuery(
+    "SELECT * FROM entries;",
+    function(err, data) {
+      if(err)
+      {
+        console.log(err);
+      }
+
+      res.render('til/index', { title: 'Today I Learned', til: data } );
+    }
+  );
 });
 
 /* THIS NEEDS TO BE LAST or /new goes here rather than where it should */
 /* READ one til entry: GET /til/0 */
 router.get('/:id', function(req, res, next) {
-  res.render('til/entry', { title:"A til entry", entry: til[req.params.id] } );
+  req.db.driver.execQuery(
+    'SELECT * FROM entries WHERE id=' + parseInt(req.params.id) + ';',
+    function(err, data) {
+      if(err)
+      {
+        console.log(err);
+      }
+
+      res.render('til/entry', { title: "a entry", entry: data[0] } );
+    }
+  );
 });
 
 module.exports = router;

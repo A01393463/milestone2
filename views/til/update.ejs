@@ -1,6 +1,6 @@
 <% include ../head %>
 
-  <form action="/til/<%= id %>" method='POST'>
+  <form action="/til/<%= entry.id %>" method='POST'>
     <label name="slug">Slug</label>
     <input type="text" name="slug" value="<%= entry.slug %>">
     <br />
