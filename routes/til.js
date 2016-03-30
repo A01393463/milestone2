@@ -72,7 +72,7 @@ router.post('/:id', function(req, res, next) {
         console.log(err);
       }
       
-      res.direct(303, '/til/' + id);
+      res.redirect(303, '/til/' + id);
     }
   );
 
